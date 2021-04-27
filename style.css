@@ -1,0 +1,17 @@
+#div-listecomptes{
+    width: 20%;
+    margin: auto;
+    background-color: rgba(202, 232, 235, 0.808);
+    padding-top: 100px;
+    padding-left: 300px;
+    height: 200px;
+}
+
+#bouton221{
+    margin-top: 50px;
+    width: 80px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgb(195, 241, 25);
+    font-size: 20px;
+}
