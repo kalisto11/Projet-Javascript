@@ -29,8 +29,31 @@ function readData(reponse){
 document.getElementById("bouton221").addEventListener("click", menu)
 
 function menu(){
-  prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
+  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
+  
+  if (choix == 1 ){
+    affichersolde();
+  }
+  else if (choix == 2 ) {
+    transferer()
+  }
+  else if (choix == 4 ) {
+    options()
+  }
+  else {
+      alert ('Choix inconnu');
+  }
 }  
+ function affichersolde(){
+     alert ('afficher solde');
+ }
+ 
+ function transferer(){
+     alert ('tranferer solde');
+ }
+ function options(){
+    var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
+ }
 
 
 
