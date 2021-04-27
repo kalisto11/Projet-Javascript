@@ -1,3 +1,4 @@
+// fonction anonyme qui se lance au chargement de la page pour récupere la liste des numéros de compte
 (function(){
     var request = null;
     if (request && request.readyState != 0){
@@ -9,13 +10,14 @@
     request.open("GET", url, true)
     request.onreadystatechange = function(){
         if (request.readyState == 4 && request.status == 200){
-            readData(JSON.parse(request.responseText))
+            getDonnees(JSON.parse(request.responseText))
         }
     }
-    request.send()
+    var donnees = "operation=accueil"
+    request.send(donnees)
 })()
 
-function readData(reponse){
+function getDonnees(reponse){
     var listeComptes = document.getElementById("listecomptes")
     for (i= 0; i < reponse.length; i++){
         var opt = document.createElement("option")
@@ -29,10 +31,10 @@ function readData(reponse){
 document.getElementById("bouton221").addEventListener("click", menu)
 
 function menu(){
-  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
+  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
   if (choix == 1 ){
-    demandSolde();
+    demandSolde()
   }
   else if (choix == 2 ) {
     transferer()
@@ -41,21 +43,21 @@ function menu(){
     options()
   }
   else {
-      alert ('Choix inconnu');
+      alert ('Choix inconnu')
   }
 }  
 
  function demandSolde(){
-    var request = null;
+    var request = null
     if (request && request.readyState != 0){
-        request.abort();
+        request.abort()
     }
     request = new XMLHttpRequest()
     var url = "senmoney.php"
     request.open("GET", url, true)
 
     request.onreadystatechange = function(){
-        alert('test');
+        alert('test')
         if (request.readyState == 4 && request.status == 200){
             afficherSolde(JSON.parse(request.responseText))
         }
@@ -67,19 +69,22 @@ function menu(){
             numeroCompte = listOption[i].textContent
         }
     } 
-    var data = "numeroCompte=" + numeroCompte + "&operation=1" ;
+    var data = "numeroCompte=" + numeroCompte + "&operation=1"
     request.send(data)
  }
  
  function transferer(){
-     alert ('tranferer solde');
+     alert ('tranferer solde')
  }
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
  }
  function afficherSolde(solde){
-    alert (solde);
+    alert (solde)
  }
+
+
+
 
 
 
