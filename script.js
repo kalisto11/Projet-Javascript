@@ -24,7 +24,13 @@ function readData(reponse){
         opt.appendChild(text)
         listeComptes.appendChild(opt)
     }
-}   
+} 
+
+document.getElementById("bouton221").addEventListener("click", menu)
+
+function menu(){
+  prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
+}  
 
 
 
