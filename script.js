@@ -32,7 +32,7 @@ function menu(){
   var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
   
   if (choix == 1 ){
-    affichersolde();
+    demandSolde();
   }
   else if (choix == 2 ) {
     transferer()
@@ -44,8 +44,31 @@ function menu(){
       alert ('Choix inconnu');
   }
 }  
- function affichersolde(){
-     alert ('afficher solde');
+
+ function demandSolde(){
+    var request = null;
+    if (request && request.readyState != 0){
+        request.abort();
+    }
+    request = new XMLHttpRequest()
+    var url = "senmoney.php"
+    request.open("GET", url, true)
+
+    request.onreadystatechange = function(){
+        alert('test');
+        if (request.readyState == 4 && request.status == 200){
+            afficherSolde(JSON.parse(request.responseText))
+        }
+    }
+    var numeroCompte = 0
+    var listOption = document.getElementsByTagName('option')
+    for (i = 0; i< listOption.length; i++){
+        if ( listOption[i].selected == "selected") {
+            numeroCompte = listOption[i].textContent
+        }
+    } 
+    var data = "numeroCompte=" + numeroCompte + "&operation=1" ;
+    request.send(data)
  }
  
  function transferer(){
@@ -53,6 +76,9 @@ function menu(){
  }
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
+ }
+ function afficherSolde(solde){
+    alert (solde);
  }
 
 
