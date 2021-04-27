@@ -9,7 +9,9 @@
     request.open("GET", url, true)
    
     request.onreadystatechange = function(){
+        
         if (request.readyState == 4 && request.status == 200){
+           
             readData(JSON.parse(request.responseText))
         }
     }
