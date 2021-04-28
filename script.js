@@ -9,6 +9,7 @@
  * Permet d'insérer la liste des numéros de compte récupéré par la fonction anonyme au chargement de la * page dans le select de la page index.html
  **/
 function readData(reponse){
+    alert("test3")
     var listeComptes = document.getElementById("listecomptes")
     for (i= 0; i < reponse.length; i++){
         var opt = document.createElement("option")
@@ -30,11 +31,14 @@ function buildRequest(donnees, callBack){
     }
     request = new XMLHttpRequest()
     var url = "senmoney.php"
-    request.open("POST", url, true)
+    request.open("GET", url, true)
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function(){
+        
         if (request.readyState == 4 && request.status == 200){
+            alert("test1")
             callBack(JSON.parse(request.responseText))
+            alert("test2")
         }
     }
     request.send(donnees)
