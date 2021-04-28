@@ -19,7 +19,7 @@
     // fonction pour récupérer la liste des numéros de comptes
     function getComptes(){
         $pdo = dbConnect();
-        $retour = $pdo->query('SELECT numero, code, solde FROM comptes');
+        $retour = $pdo->query('SELECT * FROM comptes');
         $comptes = array();
         while ($compte = $retour->fetch()){
             $comptes[] =  $compte;
