@@ -36,8 +36,7 @@ function buildRequest(donnees, callBack){
     request.onreadystatechange = function(){
         
         if (request.readyState == 4 && request.status == 200){
-            alert(request.responseText)
-            //callBack(JSON.parse(request.responseText))
+            callBack(JSON.parse(request.responseText))
         }
     }
     request.send(donnees)
