@@ -5,14 +5,14 @@
         }
 
             // fonction pour la connexion à base de données
-        public static function dbConnct(){
+        public static function dbConnect(){
             $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
             return $pdo;
         }
 
         // fonction pour récupérer la liste des numéros de comptes
         public function getComptes(){
-            $pdo = SenMoney::dbConnct();
+            $pdo = SenMoney::dbConnect();
             $retour = $pdo->query('SELECT numero, code, solde FROM comptes');
             $comptes = array();
             while ($compte = $retour->fetch()){
@@ -23,7 +23,7 @@
 
         // fonction pour récuperer le solde d'un compte passé en paramètre
         public function getSolde($numeroCompte){
-            $pdo = SenMoney::dbConnct();
+            $pdo = SenMoney::dbConnect();
             $reponse = $pdo->prepare('SELECT solde FROM comptes WHERE numero = ?');
             $reponse->execute(array($numeroCompte));
             $solde   = $reponse->fetch();
