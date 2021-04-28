@@ -32,9 +32,9 @@ function buildRequest(donnees, callBack){
     request = new XMLHttpRequest()
     var url = "senmoney.php"
     request.open("GET", url, true)
+
     //request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function(){
-        
         if (request.readyState == 4 && request.status == 200){
             callBack(JSON.parse(request.responseText))
         }

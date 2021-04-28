@@ -1,5 +1,4 @@
 <?php
-
         // fonction pour la connexion à base de données
         function dbConnect(){
             $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
