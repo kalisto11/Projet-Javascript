@@ -5,6 +5,5 @@
     while ($compte = $retour->fetch()){
         $comptes[] =  $compte;
     }
-    //echo $comptes[0]['numero'];
     exit(json_encode($comptes));
 ?>
