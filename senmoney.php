@@ -1,16 +1,17 @@
 <?php
-    if ($_GET["operation"] == "acceuil"){
+
+    if ($_GET["operation"] == "accueil"){
         getComptes();
     }
-    else if ($_GET["operation" == "getsolde"]){
-        getSolde($_GET["numeroSolde"]);
+    else if ($_GET["operation"] == "getsolde"){
+        getSolde($_GET["numerosolde"]);
     }
     else{
         getComptes();
     }
    
    
-
+    // fonction pour la connexion à base de données
     function dbConnct(){
         $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
         return $pdo;

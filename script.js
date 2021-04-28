@@ -8,12 +8,14 @@
     request = new XMLHttpRequest()
     var url = "senmoney.php"
     request.open("GET", url, true)
+    var donnees = "operation=accueil"
     request.onreadystatechange = function(){
         if (request.readyState == 4 && request.status == 200){
+            alert("test1")
             getDonnees(JSON.parse(request.responseText))
+            alert("test2")
         }
     }
-    var donnees = "operation=accueil"
     request.send(donnees)
 })()
 
@@ -76,9 +78,11 @@ function menu(){
  function transferer(){
      alert ('tranferer solde')
  }
+
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
  }
+
  function afficherSolde(solde){
     alert (solde)
  }
