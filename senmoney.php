@@ -8,21 +8,17 @@
             $solde = getSolde($_POST["numeroCompte"]);
             exit(json_encode($solde));
         }
-        else{
-            $comptes = getComptes();
-            exit(json_encode($comptes));
-        }
     }
    
     // fonction pour la connexion à base de données
-    function dbConnct(){
+    function dbConnect(){
         $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
         return $pdo;
     }
 
     // fonction pour récupérer la liste des numéros de comptes
     function getComptes(){
-        $pdo = dbConnct();
+        $pdo = dbConnect();
         $retour = $pdo->query('SELECT numero, code, solde FROM comptes');
         $comptes = array();
         while ($compte = $retour->fetch()){
@@ -33,7 +29,7 @@
 
     // fonction pour récuperer le solde d'un compte passé en paramètre
     function getSolde($numeroCompte){
-        $pdo = dbConnct();
+        $pdo = dbConnect();
         $reponse = $pdo->prepare('SELECT solde FROM comptes WHERE numero = ?');
         $reponse->execute(array($numeroCompte));
         $solde   = $reponse->fetch();
