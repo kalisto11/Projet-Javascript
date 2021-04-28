@@ -36,15 +36,12 @@
     if (isset($_GET["operation"])){
         if ($_GET["operation"] == "accueil"){
             $comptes = $senMoney->getComptes();
-            exit(json_encode($comptes));
+            var_dump(json_encode($comptes));
+            var_dump($comptes);
         }
         else if ($_GET["operation"] == "afficherSolde"){
             $solde = $senMoney->getSolde($_GET["numeroCompte"]);
             exit(json_encode($solde));
-        }
-        else{
-            $comptes = $senMoney->getComptes();
-            exit(json_encode($comptes));
         }
     }
 ?>
