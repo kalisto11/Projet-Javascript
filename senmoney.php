@@ -4,7 +4,7 @@
         
         }
 
-            // fonction pour la connexion à base de données
+        // fonction pour la connexion à base de données
         public static function dbConnect(){
             $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
             return $pdo;
@@ -36,8 +36,7 @@
     if (isset($_GET["operation"])){
         if ($_GET["operation"] == "accueil"){
             $comptes = $senMoney->getComptes();
-            echo(json_encode($comptes));
-            die();
+            exit(json_encode($comptes));
         }
         else if ($_GET["operation"] == "afficherSolde"){
             $solde = $senMoney->getSolde($_GET["numeroCompte"]);
@@ -45,8 +44,7 @@
         }
         else{
             $comptes = $senMoney->getComptes();
-            echo(json_encode($comptes));
-            die();
+            exit(json_encode($comptes));
         }
     }
 ?>
