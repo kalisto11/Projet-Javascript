@@ -1,25 +1,14 @@
 // fonction anonyme qui se lance au chargement de la page pour récupere la liste des numéros de compte
 (function(){
-    var request = null;
-    if (request && request.readyState != 0){
-        request.abort();
-    }
-
-    request = new XMLHttpRequest()
-    var url = "senmoney.php"
-    request.open("GET", url, true)
+    document.getElementById("bouton221").addEventListener("click", menu)
     var donnees = "operation=accueil"
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200){
-            alert("test1")
-            getDonnees(JSON.parse(request.responseText))
-            alert("test2")
-        }
-    }
-    request.send(donnees)
+    buildRequest(donnees, readData)
 })()
 
-function getDonnees(reponse){
+/**
+ * Permet d'insérer la liste des numéros de compte récupéré par la fonction anonyme au chargement de la * page dans le select de la page index.html
+ **/
+function readData(reponse){
     var listeComptes = document.getElementById("listecomptes")
     for (i= 0; i < reponse.length; i++){
         var opt = document.createElement("option")
@@ -30,13 +19,33 @@ function getDonnees(reponse){
     }
 } 
 
-document.getElementById("bouton221").addEventListener("click", menu)
+/**
+ * fonction pour préparer une requete avec l'objet XMLHttpRequest avec des paramètres
+ * tels que la fonction de callback et les donnes à envoyer au fichie php en POST
+ **/
+function buildRequest(donnees, callBack){
+    var request = null
+    if (request && request.readyState != 0){
+        request.abort()
+    }
+    request = new XMLHttpRequest()
+    var url = "senmoney.php"
+    request.open("POST", url, true)
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    request.onreadystatechange = function(){
+        if (request.readyState == 4 && request.status == 200){
+            callBack(JSON.parse(request.responseText))
+        }
+    }
+    request.send(donnees)
+}
 
+// fonction principale appelé si l'utilisateur appuie sur le bouton #221#
 function menu(){
   var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
   if (choix == 1 ){
-    demandSolde()
+    afficherSolde()
   }
   else if (choix == 2 ) {
     transferer()
@@ -49,21 +58,11 @@ function menu(){
   }
 }  
 
- function demandSolde(){
-    var request = null
-    if (request && request.readyState != 0){
-        request.abort()
-    }
-    request = new XMLHttpRequest()
-    var url = "senmoney.php"
-    request.open("GET", url, true)
-
-    request.onreadystatechange = function(){
-        alert('test')
-        if (request.readyState == 4 && request.status == 200){
-            afficherSolde(JSON.parse(request.responseText))
-        }
-    }
+/**
+ * Permet de faire une requete au fichier php pour récupérer le solde du compte de l'utilisateur
+ * la fonction esr appelé par la fonction menu si l'utilisateur choisit 1.
+**/
+function afficherSolde(){
     var numeroCompte = 0
     var listOption = document.getElementsByTagName('option')
     for (i = 0; i< listOption.length; i++){
@@ -71,86 +70,23 @@ function menu(){
             numeroCompte = listOption[i].textContent
         }
     } 
-    var data = "numeroCompte=" + numeroCompte + "&operation=1"
-    request.send(data)
- }
- 
+    var donnees = "operation=afficherSolde" + "&numeroCompte=774569043"
+    buildRequest(donnees, notifierSolde)
+}
+
+// pas encore implémentée
  function transferer(){
      alert ('tranferer solde')
  }
 
+// pas encore implémentée
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
  }
 
- function afficherSolde(solde){
-    alert (solde)
+ /** Permet d'afficher le solde récupéré par la fonction afficherSolde
+ * Elle est appelée par la fonction afficherSolde
+ **/
+ function notifierSolde(compte){
+    alert(compte.solde)
  }
-
-
-
-
-
-
-/*
-document.getElementById("livreBtn").addEventListener("click", function(e){
-    var request = null;
-    if (request && request.readyState != 0){
-        request.abort();
-    }
-
-    request = new XMLHttpRequest()
-    var url = "livre.php"
-    request.open("GET", url, true)
-   
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200){
-            readData(JSON.parse(request.responseText))
-        }
-    }
-    request.send()
-})
-
-function readData(reponse){
-    var listes = ""
-    for (i = 0; i < reponse.length; i++){
-        listes += "<tr><td>" + reponse[i].titre + "</td><td>" + reponse[i].auteur + "</td><td>" + reponse[i].description + "</td></tr>"
-    }
-    alert("test3");
-    document.getElementById("livres").innerHTML += listes
-    alert("test2");
-}
-*/
-
-/*
-document.getElementById("submitButton").addEventListener("click", function(e){
-    ajaxPost(readData)
-})
-var request = null;
-
-function ajaxPost(callback){
-    if (request && request.readyState != 0){
-        request.abort();
-    }
-
-    request = new XMLHttpRequest()
-    var url = "senmoney.php"
-    var prenom = document.getElementById("prenom").value
-    var nom = document.getElementById("nom").value
-    var data = "prenom=" + prenom + "&nom=" + nom
-    request.open("POST", url, true)
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-   
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200){
-            callback(JSON.parse(request.responseText))
-        }
-    }
-    request.send(data)
-}
-
-function readData(reponse){
-    var person = reponse.person
-    document.getElementById("reponse").innerHTML = person.prenom + " " + person.nom
-}
-*/

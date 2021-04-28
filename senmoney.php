@@ -1,15 +1,18 @@
 <?php
-
-    if ($_GET["operation"] == "accueil"){
-        getComptes();
+    if (isset($_POST["operation"])){
+        if ($_POST["operation"] == "accueil"){
+            $comptes = getComptes();
+            exit(json_encode($comptes));
+        }
+        else if ($_POST["operation"] == "afficherSolde"){
+            $solde = getSolde($_POST["numeroCompte"]);
+            exit(json_encode($solde));
+        }
+        else{
+            $comptes = getComptes();
+            exit(json_encode($comptes));
+        }
     }
-    else if ($_GET["operation"] == "getsolde"){
-        getSolde($_GET["numerosolde"]);
-    }
-    else{
-        getComptes();
-    }
-   
    
     // fonction pour la connexion à base de données
     function dbConnct(){
@@ -17,22 +20,23 @@
         return $pdo;
     }
 
+    // fonction pour récupérer la liste des numéros de comptes
     function getComptes(){
         $pdo = dbConnct();
-        $retour = $pdo->query('SELECT numero FROM comptes');
+        $retour = $pdo->query('SELECT numero, code, solde FROM comptes');
         $comptes = array();
         while ($compte = $retour->fetch()){
             $comptes[] =  $compte;
         }
-        exit(json_encode($comptes));
+        return $comptes;
     }
 
-    function getSolde($numero){
+    // fonction pour récuperer le solde d'un compte passé en paramètre
+    function getSolde($numeroCompte){
         $pdo = dbConnct();
         $reponse = $pdo->prepare('SELECT solde FROM comptes WHERE numero = ?');
-        $reponse->execute(array($numero));
+        $reponse->execute(array($numeroCompte));
         $solde   = $reponse->fetch();
-        exit(json_encode($solde));
+        return $solde;
     }
-
 ?>
