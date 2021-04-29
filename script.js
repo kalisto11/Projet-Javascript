@@ -31,36 +31,11 @@ function readData(reponse){
 document.getElementById("bouton221").addEventListener("click", menu)
 
 function menu(){
-  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
-  
-  if (choix == 1 ){
-    affichersolde();
-  }
-  else if (choix == 2 ) {
-    transferer()
-  }
-  else if (choix == 4 ) {
-    options()
-  }
-  else {
-      alert ('Choix inconnu');
-  }
-
+ var choix =  prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
 }  
- function affichersolde(){
-     alert ('afficher solde');
- }
- 
- function transferer(){
-     alert ('tranferer solde');
- }
- function options(){
-    var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
- }
 
 
 
-/*
 document.getElementById("livreBtn").addEventListener("click", function(e){
     var request = null;
     if (request && request.readyState != 0){
@@ -84,11 +59,11 @@ function readData(reponse){
     for (i = 0; i < reponse.length; i++){
         listes += "<tr><td>" + reponse[i].titre + "</td><td>" + reponse[i].auteur + "</td><td>" + reponse[i].description + "</td></tr>"
     }
-    alert("test3");
+
     document.getElementById("livres").innerHTML += listes
-    alert("test2");
+
 }
-*/
+
 
 /*
 document.getElementById("submitButton").addEventListener("click", function(e){

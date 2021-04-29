@@ -1,6 +1,6 @@
 <?php
     $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
-    $retour = $pdo->query('SELECT numero, code, solde FROM compte');
+    $retour = $pdo->query('SELECT numero FROM comptes');
     $comptes = array();
     while ($compte = $retour->fetch()){
         $comptes[] =  $compte;
