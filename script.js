@@ -63,13 +63,8 @@ function menu(){
  * la fonction est appelée par la fonction menu si l'utilisateur choisit 1.
 **/
 function afficherSolde(){
-    var listeOptions =  document.getElementsByTagName("option")
-    for (i = 0; i < listeOptions.length; i++){
-        if (listeOptions[i].selected == true){
-            var numeroCompte = listeOptions[i].textContent
-        }
-    }
-    var donnees = "operation=afficherSolde" + "&numeroCompte=" + numeroCompte
+   var numCompte = getNumCompteCourant()
+    var donnees = "operation=afficherSolde" + "&numeroCompte=" + numCompte
     buildRequest(donnees, notifierSolde)
 }
 
@@ -85,11 +80,37 @@ function notifierSolde(compte){
 
 // pas encore implémentée
  function transferer(){
-     alert ('tranferer solde')
+    var numCompte = getNumCompteCourant()
+    var NumDestinataire = prompt("Tapez le numéro du destinataire")
+    var montant = prompt("Tapez le montant à envoyer")
+    var code = prompt("Tapez votre code secret")
+    var donnees = "operation=transferer" + "&numCompte=" + numCompte + "&numDestinataire=" + NumDestinataire + "&montant=" + montant + "&code=" + code
+    buildRequest(donnees, notifierTransfert)
  }
+
+function notifierTransfert(notification){
+  var choix = confirm(notification.message)
+  if (choix){
+      menu()
+  }
+  else{
+      alert("Au revoir !")
+  }
+}
 
 // pas encore implémentée
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
+ }
+
+ // Permet de récupérer le numéro du compte sélectionné dans le champ select
+ function getNumCompteCourant(){
+    var listeOptions =  document.getElementsByTagName("option")
+    for (i = 0; i < listeOptions.length; i++){
+        if (listeOptions[i].selected == true){
+            var numeroCompte = listeOptions[i].textContent
+        }
+    }
+    return numeroCompte
  }
 
