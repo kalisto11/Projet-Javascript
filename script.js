@@ -42,7 +42,7 @@ function buildRequest(donnees, callBack){
 
 // fonction principale appelé si l'utilisateur appuie sur le bouton #221#
 function menu(){
-  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
+  var choix = prompt("\t---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
   if (choix == 1 ){
     afficherSolde()
@@ -54,13 +54,13 @@ function menu(){
     options()
   }
   else {
-      alert ('Choix inconnu')
+      alert ('Au revoir !')
   }
 }  
 
 /**
  * Permet de faire une requete au fichier php pour récupérer le solde du compte de l'utilisateur
- * la fonction esr appelé par la fonction menu si l'utilisateur choisit 1.
+ * la fonction est appelée par la fonction menu si l'utilisateur choisit 1.
 **/
 function afficherSolde(){
     var listeOptions =  document.getElementsByTagName("option")
@@ -73,6 +73,16 @@ function afficherSolde(){
     buildRequest(donnees, notifierSolde)
 }
 
+/** Permet d'afficher le solde récupéré par la fonction afficherSolde
+* Elle est appelée par la fonction afficherSolde
+**/
+function notifierSolde(compte){
+    choix = confirm("Le solde de votre compte est: " + compte.solde + "\nVoulez-vous retourner au menu ?")
+    if (choix){
+        menu()
+    }
+}
+
 // pas encore implémentée
  function transferer(){
      alert ('tranferer solde')
@@ -83,9 +93,3 @@ function afficherSolde(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
  }
 
- /** Permet d'afficher le solde récupéré par la fonction afficherSolde
- * Elle est appelée par la fonction afficherSolde
- **/
- function notifierSolde(compte){
-    alert(compte.solde)
- }
