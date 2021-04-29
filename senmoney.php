@@ -11,8 +11,8 @@ $_POST["code"] = "0000";
             $comptes = getComptes();
             exit(json_encode($comptes));
         }
-        else if ($_GET["operation"] == "afficherSolde"){
-            $solde = $senMoney->getSolde($_GET["numeroCompte"]);
+        else if ($_POST["operation"] == "afficherSolde"){
+            $solde = getSolde($_POST["numeroCompte"]);
             exit(json_encode($solde));
         }
         else if ($_POST["operation"] == "transferer"){
