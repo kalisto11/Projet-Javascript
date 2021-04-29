@@ -99,12 +99,58 @@ function notifierTransfert(notification){
 }
 
 // pas encore implémentée
- function options(){
-    var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
- }
+function options(){
+    var choix = prompt("\t---OPTIONS---\n1. Modifier mon code secret\n2. Consulter mes cinq dernières transactions\n3. Retourner au menu principal");
+    if (choix == 1){
+        modifierCode()
+    }
+    else if (choix == 2){
+        afficherTransactions()
+    }
+    else if (choix == 3){
+        menu()
+    }
+    else{
+        alert("Veuillez choisir un chiffre correct")
+        options()
+    }
+}
 
- // Permet de récupérer le numéro du compte sélectionné dans le champ select
- function getNumCompteCourant(){
+// permet de modifier le code de l'utilisateur s'il saisit le bon code
+function modifierCode(){
+    var numCompte = getNumCompteCourant()
+    var codeActuel = prompt("Tapez votre code secret actuel")
+    var nouveauCode1 = prompt("Tapez le nouveau code secret")
+    var nouveauCode2 = prompt("Confirmer le nouveau code secret")
+    if (nouveauCode1 == nouveauCode2){
+        var donnees = "operation=modifierCode" + "&numCompte=" + numCompte + "&codeActuel=" + codeActuel + "&nouveauCode=" + nouveauCode1
+        console.log(donnees)
+        buildRequest(donnees, notifierCode)
+    }
+    else{
+        alert("Les mots de passe ne correspondent pas.")
+        options()
+    }
+}
+  
+function notifierCode(notification){
+    if (notification.type == "succes"){
+       var choix = confirm("Le code secret a été mis à jour avec succès.\nVoulez-vous retourner au menu ?")
+       if (choix){
+           menu()
+       }
+       else{
+           alert("Au revoir !")
+       }
+    }
+    else{
+       alert("Le code secret courant saisi n'est pas correct")   
+       options()      
+    }
+}
+
+// Permet de récupérer le numéro du compte sélectionné dans le champ select
+function getNumCompteCourant(){
     var listeOptions =  document.getElementsByTagName("option")
     for (i = 0; i < listeOptions.length; i++){
         if (listeOptions[i].selected == true){
@@ -112,5 +158,5 @@ function notifierTransfert(notification){
         }
     }
     return numeroCompte
- }
+}
 

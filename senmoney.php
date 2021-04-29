@@ -1,11 +1,13 @@
 <?php
+
 /*
-$_POST["operation"] = "transferer";
-$_POST["numCompte"] = "773452398";
-$_POST["numDestinataire"] = "774569043";
-$_POST["montant"] = "150";
-$_POST["code"] = "0000";
+$_POST["operation"] = "modifierCode";
+$_POST["numCompte"] = "781214796";
+//$_POST["numDestinataire"] = "774569043";
+$_POST["codeActuel"] = "0000";
+$_POST["nouveauCode"] = "1234";
 */
+
     if (isset($_POST["operation"])){
         if ($_POST["operation"] == "accueil"){
             $comptes = getComptes();
@@ -17,6 +19,9 @@ $_POST["code"] = "0000";
         }
         else if ($_POST["operation"] == "transferer"){
             transferer($_POST["numCompte"], $_POST["numDestinataire"], $_POST["montant"], $_POST["code"]);
+        }
+        else if ($_POST["operation"] == "modifierCode"){
+            modifierCode($_POST["numCompte"], $_POST["codeActuel"], $_POST["nouveauCode"]);
         }
     }
    
@@ -46,9 +51,33 @@ $_POST["code"] = "0000";
         return $solde;
     }
 
+     // fonction pour récuperer le solde d'un compte passé en paramètre
+     function modifierCode($numCompte, $codeActuel, $nouveauCode){
+        $notification = array();
+        $pdo = dbConnect();
+        $reponse = $pdo->prepare('SELECT code FROM comptes WHERE numero = ?');
+        $reponse->execute(array($numCompte));
+        $compte = $reponse->fetch();
+        if ($compte["code"] == $codeActuel){
+            $req = "UPDATE comptes SET code = :nouveauCode WHERE numero = :numCompte";
+            $reponse = $pdo->prepare($req) OR die(print_r($pdo->errorinfo()));
+            $resultat = $reponse->execute(array( 
+                'nouveauCode' => $nouveauCode,
+                'numCompte' => $numCompte
+            ));	
+            $notification["type"] = "succes";
+            $notification["message"] = "Mot de passe mis à jour avec succès";
+        }
+        else{
+            $notification["type"] = "echec";
+            $notification["message"] = "Le mot de passe courant n'est pas correct";
+        }
+        exit(json_encode($notification));
+    }
+
     // fonction pour trasnfert
-    function transferer ($numCompte, $numDestinataire, $montant, $code){
-        
+    function transferer($numCompte, $numDestinataire, $montant, $code){
+        $notification = array();
         $pdo = dbConnect();
         $reponse = $pdo->prepare('SELECT code, solde FROM comptes WHERE numero = ?');
         $reponse->execute(array($numCompte));
@@ -87,23 +116,20 @@ $_POST["code"] = "0000";
 			        'montant' => $montant
                 ));	
 
-                $notification = array();
                 $notification["type"] = "succes";
                 $notification["message"] = "Transfert effectué avec succès";
                 exit(json_encode($notification));
             }
             else{
-                $notification = array();
                 $notification["type"] = "echec";
                 $notification["message"] = "Montant insuffisant";
                 exit(json_encode($notification));
             }
         }
         else{
-            $erreur = array();
-            $erreur["type"] = "erreur";
-            $erreur["message"] = "Mot de passe incorrect";
-            exit(json_encode($erreur));
+            $notification["type"] = "erreur";
+            $notification["message"] = "Mot de passe incorrect";
+            exit(json_encode($notification));
         }
     }
 ?>
