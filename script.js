@@ -63,14 +63,13 @@ function menu(){
  * la fonction esr appelé par la fonction menu si l'utilisateur choisit 1.
 **/
 function afficherSolde(){
-    var numeroCompte = 0
-    var listOption = document.getElementsByTagName('option')
-    for (i = 0; i< listOption.length; i++){
-        if ( listOption[i].selected == "selected") {
-            numeroCompte = listOption[i].textContent
+    var listeOptions =  document.getElementsByTagName("option")
+    for (i = 0; i < listeOptions.length; i++){
+        if (listeOptions[i].selected == true){
+            var numeroCompte = listeOptions[i].textContent
         }
-    } 
-    var donnees = "operation=afficherSolde" + "&numeroCompte=774569043"
+    }
+    var donnees = "operation=afficherSolde" + "&numeroCompte=" + numeroCompte
     buildRequest(donnees, notifierSolde)
 }
 
