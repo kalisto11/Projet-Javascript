@@ -32,11 +32,13 @@ function buildRequest(donnees, callBack){
     request = new XMLHttpRequest()
     var url = "senmoney.php"
     request.open("GET", url, true)
-    //request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function(){
         
         if (request.readyState == 4 && request.status == 200){
+            alert("test1")
             callBack(JSON.parse(request.responseText))
+            alert("test2")
         }
     }
     request.send(donnees)
@@ -44,7 +46,7 @@ function buildRequest(donnees, callBack){
 
 // fonction principale appelé si l'utilisateur appuie sur le bouton #221#
 function menu(){
-  var choix = prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
+  var choix = prompt("\t---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
   if (choix == 1 ){
     afficherSolde()
@@ -56,39 +58,63 @@ function menu(){
     options()
   }
   else {
-      alert ('Choix inconnu')
+      alert ('Au revoir !')
   }
 }  
 
 /**
  * Permet de faire une requete au fichier php pour récupérer le solde du compte de l'utilisateur
- * la fonction esr appelé par la fonction menu si l'utilisateur choisit 1.
+ * la fonction est appelée par la fonction menu si l'utilisateur choisit 1.
 **/
 function afficherSolde(){
-    var numeroCompte = 0
-    var listOption = document.getElementsByTagName('option')
-    for (i = 0; i< listOption.length; i++){
-        if ( listOption[i].selected == "selected") {
-            numeroCompte = listOption[i].textContent
-        }
-    } 
-    var donnees = "operation=afficherSolde" + "&numeroCompte=774569043"
+   var numCompte = getNumCompteCourant()
+    var donnees = "operation=afficherSolde" + "&numeroCompte=" + numCompte
     buildRequest(donnees, notifierSolde)
+}
+
+/** Permet d'afficher le solde récupéré par la fonction afficherSolde
+* Elle est appelée par la fonction afficherSolde
+**/
+function notifierSolde(compte){
+    choix = confirm("Le solde de votre compte est: " + compte.solde + "\nVoulez-vous retourner au menu ?")
+    if (choix){
+        menu()
+    }
 }
 
 // pas encore implémentée
  function transferer(){
-     alert ('tranferer solde')
+    var numCompte = getNumCompteCourant()
+    var NumDestinataire = prompt("Tapez le numéro du destinataire")
+    var montant = prompt("Tapez le montant à envoyer")
+    var code = prompt("Tapez votre code secret")
+    var donnees = "operation=transferer" + "&numCompte=" + numCompte + "&numDestinataire=" + NumDestinataire + "&montant=" + montant + "&code=" + code
+    buildRequest(donnees, notifierTransfert)
  }
+
+function notifierTransfert(notification){
+  var choix = confirm(notification.message)
+  if (choix){
+      menu()
+  }
+  else{
+      alert("Au revoir !")
+  }
+}
 
 // pas encore implémentée
  function options(){
     var op = prompt("---OPTION---\n1. Modifier son code secret\n2. Consulter les cinq dernières transactions");
  }
 
- /** Permet d'afficher le solde récupéré par la fonction afficherSolde
- * Elle est appelée par la fonction afficherSolde
- **/
- function notifierSolde(compte){
-    alert(compte.solde)
+ // Permet de récupérer le numéro du compte sélectionné dans le champ select
+ function getNumCompteCourant(){
+    var listeOptions =  document.getElementsByTagName("option")
+    for (i = 0; i < listeOptions.length; i++){
+        if (listeOptions[i].selected == true){
+            var numeroCompte = listeOptions[i].textContent
+        }
+    }
+    return numeroCompte
  }
+
