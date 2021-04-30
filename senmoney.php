@@ -1,13 +1,5 @@
 <?php
 
-/*
-$_POST["operation"] = "transactions";
-$_POST["numCompte"] = "775460261";
-//$_POST["numDestinataire"] = "774569043";
-//$_POST["codeActuel"] = "0000";
-//$_POST["nouveauCode"] = "1234";
-*/
-
     if (isset($_POST["operation"])){
         if ($_POST["operation"] == "accueil"){
             $comptes = getComptes();
