@@ -6,6 +6,10 @@
     padding-left: 300px;
     height: 200px;
 }
+#nomAppli{
+    margin-top: 10px;
+    color: rgb(90, 25, 241);
+}
 #bouton221{
     margin-top: 50px;
     width: 80px;

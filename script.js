@@ -10,14 +10,16 @@
     request.onreadystatechange = function(){
         
         if (request.readyState == 4 && request.status == 200){
-           
+            
             readData(JSON.parse(request.responseText))
+            alert('test1')
         }
     }
     request.send()
 })()
 
 function readData(reponse){
+    
     var listeComptes = document.getElementById("listecomptes")
     for (i= 0; i < reponse.length; i++){
         var opt = document.createElement("option")
@@ -43,12 +45,14 @@ document.getElementById("livreBtn").addEventListener("click", function(e){
     }
 
     request = new XMLHttpRequest()
-    var url = "livre.php"
+    var url = "senmoney.php"
     request.open("GET", url, true)
-   
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     request.onreadystatechange = function(){
+        
         if (request.readyState == 4 && request.status == 200){
             readData(JSON.parse(request.responseText))
+            callBack(JSON.parse(request.responseText))
         }
     }
     request.send()
