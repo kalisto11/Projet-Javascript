@@ -124,7 +124,6 @@ function modifierCode(){
     var nouveauCode2 = prompt("Confirmer le nouveau code secret")
     if (nouveauCode1 == nouveauCode2){
         var donnees = "operation=modifierCode" + "&numCompte=" + numCompte + "&codeActuel=" + codeActuel + "&nouveauCode=" + nouveauCode1
-        console.log(donnees)
         buildRequest(donnees, notifierCode)
     }
     else{
@@ -158,10 +157,9 @@ function afficherTransactions(){
 
 // Permet de notifier à l'utilisateur ses 5 dernières transactions
 function notifierTransactions(reponse){
-    console.log(reponse)
-    var message = "Numéro\t Type\t Montant\t Date \n" 
+    var message = "Numéro\t Type\t\t Montant\t\t Date \n" 
     for (i = 0; i < reponse.length; i++){
-        message += reponse[i].compteEtranger + " \t " + reponse[i].type + " \t " + reponse[i].montant + " \t " + reponse[i].date + "\n"
+        message += reponse[i].compteEtranger + " \t " + reponse[i].type + " \t\t " + reponse[i].montant + " \t\t " + reponse[i].date + "\n"
     }
     choix = confirm(message)
     if (choix){

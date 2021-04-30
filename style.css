@@ -1,17 +1,58 @@
-#div-listecomptes{
-    width: 20%;
-    margin: auto;
-    background-color: rgba(202, 232, 235, 0.808);
-    padding-top: 100px;
-    padding-left: 300px;
-    height: 200px;
+body{
+    min-width: 320px;
+    font-family: Verdana, "Sans-serif";
 }
+
+#board {
+    background-color: rgb(69, 128, 238);
+    opacity: .9;
+    height: 280px;
+    width: 400px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 75px;
+    padding: 0;
+    text-align: center;
+}
+
+#numerocomptes {
+    height: 30px;
+    font-size: 20px;
+    margin-top: 100px;
+}
+
 
 #bouton221{
     margin-top: 50px;
     width: 80px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: rgb(195, 241, 25);
+    background-color: rgb(246, 249, 250);
     font-size: 20px;
+}
+
+#bouton221:hover{
+    font-size: 23px;
+    background-color: rgb(223, 238, 158);
+}
+
+h1 {
+    font-size: 40px;
+    padding: 10px;
+    margin: 0;
+    color: rgb(4, 6, 119);
+    background-color: rgb(69, 128, 238);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#tribute{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 18px;
+    height: 20px;
+    background-color: rgb(69, 128, 238);
+    text-align: center;
+    color:rgb(246, 249, 250)
 }
