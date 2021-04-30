@@ -149,6 +149,29 @@ function notifierCode(notification){
     }
 }
 
+// Permet de faire une requte pour récupérer les 5 dernières transactions
+function afficherTransactions(){
+    var numCompte = getNumCompteCourant()
+    var donnees = "operation=transactions" + "&numCompte=" + numCompte
+    buildRequest(donnees, notifierTransactions)
+}
+
+// Permet de notifier à l'utilisateur ses 5 dernières transactions
+function notifierTransactions(reponse){
+    console.log(reponse)
+    var message = "Numéro\t Type\t Montant\t Date \n" 
+    for (i = 0; i < reponse.length; i++){
+        message += reponse[i].compteEtranger + " \t " + reponse[i].type + " \t " + reponse[i].montant + " \t " + reponse[i].date + "\n"
+    }
+    choix = confirm(message)
+    if (choix){
+        menu()
+    }
+    else{
+        alert("Au revoir !")
+    }
+}
+
 // Permet de récupérer le numéro du compte sélectionné dans le champ select
 function getNumCompteCourant(){
     var listeOptions =  document.getElementsByTagName("option")
