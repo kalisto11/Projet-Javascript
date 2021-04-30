@@ -81,19 +81,19 @@
                     ));	
 
                     // Enregistrement de la transaction
-                    $req3 = 'INSERT INTO transactions (type, compteExpediteur, compteDestinataire, montant, date) VALUES ("Envoi", :compteExpediteur, :compteDestinataire, :montant, NOW())';
+                    $req3 = 'INSERT INTO transactions (type, numExpediteur, numDestinataire, montant, date) VALUES ("Envoi", :numExpediteur, :numDestinataire, :montant, NOW())';
                     $reponse = $pdo->prepare($req3) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
-                        'compteExpediteur' => $numCompte,
-                        'compteDestinataire' => $numDestinataire,
+                        'numExpediteur' => $numCompte,
+                        'numDestinataire' => $numDestinataire,
                         'montant' => $montant
                     ));	
 
-                    $req4 = 'INSERT INTO transactions (type, compteExpediteur, compteDestinataire, montant, date) VALUES ("Reception", :compteExpediteur, :compteDestinataire, :montant, NOW())';
+                    $req4 = 'INSERT INTO transactions (type, numExpediteur, numDestinataire, montant, date) VALUES ("Reception", :numExpediteur, :numDestinataire, :montant, NOW())';
                     $reponse = $pdo->prepare($req4) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
-                        'compteExpediteur' => $numDestinataire,
-                        'compteDestinataire' => $numCompte,
+                        'numExpediteur' => $numDestinataire,
+                        'numDestinataire' => $numCompte,
                         'montant' => $montant
                     ));	
 
@@ -117,7 +117,7 @@
         // Permet de récupérer les 5 dernières transactions d'un numéro de compte donné en paramètre
         public function getTransactions($numCompte){
             $pdo = SELF::dbConnect();
-            $reponse = $pdo->prepare('SELECT * FROM transactions WHERE compteExpediteur = ? ORDER BY date DESC LIMIT 5');
+            $reponse = $pdo->prepare('SELECT * FROM transactions WHERE numExpediteur = ? ORDER BY date DESC LIMIT 5');
             $reponse->execute(array($numCompte));
             $transactions = array();
             while ($transaction = $reponse->fetch()){

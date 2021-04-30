@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 30 avr. 2021 à 22:59
+-- Généré le :  ven. 30 avr. 2021 à 23:15
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.4.0
 
@@ -55,8 +55,8 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
-  `compteExpediteur` int(255) NOT NULL,
-  `compteDestinataire` int(255) NOT NULL,
+  `numExpediteur` int(255) NOT NULL,
+  `numDestinataire` int(255) NOT NULL,
   `montant` int(255) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 -- Déchargement des données de la table `transactions`
 --
 
-INSERT INTO `transactions` (`id`, `type`, `compteExpediteur`, `compteDestinataire`, `montant`, `date`) VALUES
+INSERT INTO `transactions` (`id`, `type`, `numExpediteur`, `numDestinataire`, `montant`, `date`) VALUES
 (1, 'Envoi', 775460261, 775270834, 10000, '2021-04-30 21:34:14'),
 (2, 'Reception', 775270834, 775460261, 10000, '2021-04-30 21:34:14'),
 (3, 'Envoi', 775460261, 775270861, 5000, '2021-04-30 21:34:54'),
