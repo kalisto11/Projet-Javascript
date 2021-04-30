@@ -159,7 +159,7 @@ function afficherTransactions(){
 function notifierTransactions(reponse){
     var message = "Numéro\t Type\t\t Montant\t\t Date \n" 
     for (i = 0; i < reponse.length; i++){
-        message += reponse[i].compteEtranger + " \t " + reponse[i].type + " \t\t " + reponse[i].montant + " \t\t " + reponse[i].date + "\n"
+        message += reponse[i].compteDestinataire + " \t " + reponse[i].type + " \t\t " + reponse[i].montant + " \t\t " + reponse[i].date + "\n"
     }
     choix = confirm(message)
     if (choix){
