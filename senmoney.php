@@ -1,11 +1,11 @@
 <?php
 
 /*
-$_POST["operation"] = "modifierCode";
-$_POST["numCompte"] = "781214796";
+$_POST["operation"] = "transactions";
+$_POST["numCompte"] = "775460261";
 //$_POST["numDestinataire"] = "774569043";
-$_POST["codeActuel"] = "0000";
-$_POST["nouveauCode"] = "1234";
+//$_POST["codeActuel"] = "0000";
+//$_POST["nouveauCode"] = "1234";
 */
 
     if (isset($_POST["operation"])){
@@ -23,6 +23,9 @@ $_POST["nouveauCode"] = "1234";
         else if ($_POST["operation"] == "modifierCode"){
             modifierCode($_POST["numCompte"], $_POST["codeActuel"], $_POST["nouveauCode"]);
         }
+        else if ($_POST["operation"] == "transactions"){
+            getTransactions($_POST["numCompte"]);
+        }
     }
    
     // fonction pour la connexion à base de données
@@ -34,9 +37,9 @@ $_POST["nouveauCode"] = "1234";
     // fonction pour récupérer la liste des numéros de comptes
     function getComptes(){
         $pdo = dbConnect();
-        $retour = $pdo->query('SELECT * FROM comptes');
+        $reponse = $pdo->query('SELECT * FROM comptes');
         $comptes = array();
-        while ($compte = $retour->fetch()){
+        while ($compte = $reponse->fetch()){
             $comptes[] =  $compte;
         }
         return $comptes;
@@ -131,5 +134,17 @@ $_POST["nouveauCode"] = "1234";
             $notification["message"] = "Mot de passe incorrect";
             exit(json_encode($notification));
         }
+    }
+
+    // Permet de récupérer les 5 dernières transactions d'un numéro de compte donné en paramètre
+    function getTransactions($numCompte){
+        $pdo = dbConnect();
+        $reponse = $pdo->prepare('SELECT * FROM transactions WHERE compteDomicile = ? ORDER BY date DESC LIMIT 5');
+        $reponse->execute(array($numCompte));
+        $transactions = array();
+        while ($transaction = $reponse->fetch()){
+            $transactions[] =  $transaction;
+        }
+        exit(json_encode($transactions));
     }
 ?>

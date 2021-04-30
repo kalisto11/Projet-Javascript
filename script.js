@@ -2,20 +2,20 @@
 (function(){
     document.getElementById("bouton221").addEventListener("click", menu)
     var donnees = "operation=accueil"
-    buildRequest(donnees, readData)
+    buildRequest(donnees, getNumComptes)
 })()
 
 /**
  * Permet d'insérer la liste des numéros de compte récupéré par la fonction anonyme au chargement de la * page dans le select de la page index.html
  **/
-function readData(reponse){
-    var listeComptes = document.getElementById("listecomptes")
+function getNumComptes(reponse){
+    var numeroComptes = document.getElementById("numerocomptes")
     for (i= 0; i < reponse.length; i++){
         var opt = document.createElement("option")
         opt.setAttribute("value", reponse[i].numero)
         var text = document.createTextNode(reponse[i].numero)
         opt.appendChild(text)
-        listeComptes.appendChild(opt)
+        numeroComptes.appendChild(opt)
     }
 } 
 
