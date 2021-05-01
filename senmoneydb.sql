@@ -1,11 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3307
--- Généré le :  mar. 27 avr. 2021 à 15:30
--- Version du serveur :  10.3.14-MariaDB
--- Version de PHP :  7.2.18
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  ven. 30 avr. 2021 à 23:15
+-- Version du serveur :  10.4.10-MariaDB
+-- Version de PHP :  7.4.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,20 +29,20 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `comptes`;
 CREATE TABLE IF NOT EXISTS `comptes` (
-  `numero` int(11) NOT NULL AUTO_INCREMENT,
-  `code` int(11) NOT NULL,
-  `solde` int(11) NOT NULL,
-  PRIMARY KEY (`numero`)
-) ENGINE=MyISAM AUTO_INCREMENT=771831269 DEFAULT CHARSET=utf8;
+  `numero` int(255) NOT NULL,
+  `code` int(255) NOT NULL,
+  `solde` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `comptes`
 --
 
 INSERT INTO `comptes` (`numero`, `code`, `solde`) VALUES
-(701002030, 123, 50000),
-(771831268, 0, 25000);
-
+(775460261, 1234, 4969000),
+(781214796, 1234, 7996000),
+(775270834, 1234, 4020000),
+(775270861, 1234, 2015000);
 -- --------------------------------------------------------
 
 --
@@ -52,23 +51,28 @@ INSERT INTO `comptes` (`numero`, `code`, `solde`) VALUES
 
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
-  `idTransaction` int(11) NOT NULL AUTO_INCREMENT,
-  `dateTrans` date NOT NULL,
-  `numero` int(11) NOT NULL,
-  `montant` int(11) NOT NULL,
-  `typeTrans` varchar(100) NOT NULL,
-  PRIMARY KEY (`idTransaction`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  `numExpediteur` int(255) NOT NULL,
+  `numDestinataire` int(255) NOT NULL,
+  `montant` int(255) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `transactions`
 --
 
-INSERT INTO `transactions` (`idTransaction`, `dateTrans`, `numero`, `montant`, `typeTrans`) VALUES
-(1, '2021-04-20', 771831268, 1000, 'transfert'),
-(2, '2021-04-25', 701002030, 1000, 'reception'),
-(3, '2021-04-20', 771831268, 1000, 'transfert'),
-(4, '2021-04-25', 701002030, 1000, 'reception');
+INSERT INTO `transactions` (`id`, `type`, `numExpediteur`, `numDestinataire`, `montant`, `date`) VALUES
+(1, 'Envoi', 775460261, 775270834, 10000, '2021-04-30 21:34:14'),
+(2, 'Reception', 775270834, 775460261, 10000, '2021-04-30 21:34:14'),
+(3, 'Envoi', 775460261, 775270861, 5000, '2021-04-30 21:34:54'),
+(4, 'Reception', 775270861, 775460261, 5000, '2021-04-30 21:34:54'),
+(5, 'Envoi', 781214796, 775460261, 15000, '2021-04-30 21:35:21'),
+(6, 'Reception', 775460261, 781214796, 15000, '2021-04-30 21:35:21'),
+(7, 'Envoi', 775460261, 781214796, 2000, '2021-04-30 22:27:29'),
+(8, 'Reception', 781214796, 775460261, 2000, '2021-04-30 22:27:29');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

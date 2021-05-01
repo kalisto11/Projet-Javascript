@@ -11,7 +11,6 @@
         public function __construct(){
         
         }
-
             // fonction pour la connexion à base de données
 
     class SenMoneyRequest{
@@ -157,5 +156,4 @@
             $request->getTransactions($_POST["numCompte"]);
         }
     }
-   
 ?>
