@@ -44,13 +44,13 @@ function buildRequest(donnees, callBack){
 function menu(){
   var choix = prompt("\t---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
-  if (choix == 1 ){
+  if (choix == 1){
     afficherSolde()
   }
-  else if (choix == 2 ) {
+  else if (choix == 2) {
     transferer()
   }
-  else if (choix == 4 ) {
+  else if (choix == 4) {
     options()
   }
   else {
