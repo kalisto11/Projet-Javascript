@@ -1,25 +1,25 @@
 (function(){
-    var request = null;
-    if (request && request.readyState != 0){
-        request.abort();
+    var xhr = null;
+    if (xhr && xhr.readyState != 0){
+        xhr.abort();
     }
-    request = new XMLHttpRequest()
+    xhr = new XMLHttpxhr()
     var url = "senmoney.php"
-    request.open("GET", url, true)
-    request.onreadystatechange = function(){
+    xhr.open("GET", url, true)
+    xhr.onreadystatechange = function(){
         
-        if (request.readyState == 4 && request.status == 200){       
-            readData(JSON.parse(request.responseText))
+        if (xhr.readyState == 4 && xhr.status == 200){       
+            readData(JSON.parse(xhr.responseText))
         }
     }
-    request.send()
+    xhr.send()
 })()
 
 (function readData(reponse){
     var listeComptes = document.getElementById("listecomptes")
     document.getElementById("bouton221").addEventListener("click", menu)
     var donnees = "operation=accueil"
-    buildRequest(donnees, getNumComptes)
+    buildxhr(donnees, getNumComptes)
 })()
 
 /**
@@ -45,22 +45,22 @@ function menu(){
 
 
 document.getElementById("livreBtn").addEventListener("click", function(e){
-    var request = null;
-    if (request && request.readyState != 0){
-        request.abort();
+    var xhr = null;
+    if (xhr && xhr.readyState != 0){
+        xhr.abort();
     }
 
-    request = new XMLHttpRequest()
+    xhr = new XMLHttpxhr()
     var url = "senmoney.php"
-    request.open("POST", url, true)
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200){
-            readData(JSON.parse(request.responseText))
-            callBack(JSON.parse(request.responseText))
+    xhr.open("POST", url, true)
+    xhr.setxhrHeader("Content-type", "application/x-www-form-urlencoded")
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && xhr.status == 200){
+            readData(JSON.parse(xhr.responseText))
+            callBack(JSON.parse(xhr.responseText))
         }
     }
-    request.send()
+    xhr.send()
 })
 
 function readData(reponse){
@@ -78,27 +78,27 @@ function readData(reponse){
 document.getElementById("submitButton").addEventListener("click", function(e){
     ajaxPost(readData)
 })
-var request = null;
+var xhr = null;
 
 function ajaxPost(callback){
-    if (request && request.readyState != 0){
-        request.abort();
+    if (xhr && xhr.readyState != 0){
+        xhr.abort();
     }
 
-    request = new XMLHttpRequest()
+    xhr = new XMLHttpxhr()
     var url = "senmoney.php"
     var prenom = document.getElementById("prenom").value
     var nom = document.getElementById("nom").value
     var data = "prenom=" + prenom + "&nom=" + nom
-    request.open("POST", url, true)
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    xhr.open("POST", url, true)
+    xhr.setxhrHeader("Content-type", "application/x-www-form-urlencoded")
    
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200){
-            callback(JSON.parse(request.responseText))
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && xhr.status == 200){
+            callback(JSON.parse(xhr.responseText))
         }
     }
-    request.send(data)
+    xhr.send(data)
 }
 
 function readData(reponse){
@@ -132,7 +132,7 @@ function menu(){
 function afficherSolde(){
    var numCompte = getNumCompteCourant()
     var donnees = "operation=afficherSolde" + "&numeroCompte=" + numCompte
-    buildRequest(donnees, notifierSolde)
+    buildxhr(donnees, notifierSolde)
 }
 
 /** Permet d'afficher le solde récupéré par la fonction afficherSolde
@@ -152,7 +152,7 @@ function notifierSolde(compte){
     var montant = prompt("Tapez le montant à envoyer")
     var code = prompt("Tapez votre code secret")
     var donnees = "operation=transferer" + "&numCompte=" + numCompte + "&numDestinataire=" + NumDestinataire + "&montant=" + montant + "&code=" + code
-    buildRequest(donnees, notifierTransfert)
+    buildxhr(donnees, notifierTransfert)
  }
 
 function notifierTransfert(notification){
@@ -191,7 +191,7 @@ function modifierCode(){
     var nouveauCode2 = prompt("Confirmer le nouveau code secret")
     if (nouveauCode1 == nouveauCode2){
         var donnees = "operation=modifierCode" + "&numCompte=" + numCompte + "&codeActuel=" + codeActuel + "&nouveauCode=" + nouveauCode1
-        buildRequest(donnees, notifierCode)
+        buildxhr(donnees, notifierCode)
     }
     else{
         alert("Les mots de passe ne correspondent pas.")
@@ -219,7 +219,7 @@ function notifierCode(notification){
 function afficherTransactions(){
     var numCompte = getNumCompteCourant()
     var donnees = "operation=transactions" + "&numCompte=" + numCompte
-    buildRequest(donnees, notifierTransactions)
+    buildxhr(donnees, notifierTransactions)
 }
 
 // Permet de notifier à l'utilisateur ses 5 dernières transactions
