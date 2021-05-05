@@ -1,14 +1,13 @@
--- version 4.9.2
--- https://www.phpmyadmin.net/
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 30 avr. 2021 à 23:15
--- Version du serveur :  10.4.10-MariaDB
--- Version de PHP :  7.4.0
+-- Client :  127.0.0.1
+-- Généré le :  Mer 05 Mai 2021 à 00:40
+-- Version du serveur :  10.1.9-MariaDB
+-- Version de PHP :  5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -27,54 +26,56 @@ SET time_zone = "+00:00";
 -- Structure de la table `comptes`
 --
 
-DROP TABLE IF EXISTS `comptes`;
-CREATE TABLE IF NOT EXISTS `comptes` (
+CREATE TABLE `comptes` (
   `numero` int(255) NOT NULL,
   `code` int(255) NOT NULL,
   `solde` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `comptes`
+-- Contenu de la table `comptes`
 --
 
 INSERT INTO `comptes` (`numero`, `code`, `solde`) VALUES
-(775460261, 1234, 4969000),
-(781214796, 1234, 7996000),
-(775270834, 1234, 4020000),
-(775270861, 1234, 2015000);
+(775001020, 0, 10000),
+(781251525, 1234, 90000),
+(766106030, 5678, 20000),
+(704007580, 1020, 15000);
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `transactions`
 --
 
-DROP TABLE IF EXISTS `transactions`;
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `transactions` (
+  `id` int(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `numExpediteur` int(255) NOT NULL,
   `numDestinataire` int(255) NOT NULL,
   `montant` int(255) NOT NULL,
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Déchargement des données de la table `transactions`
+-- Index pour les tables exportées
 --
 
-INSERT INTO `transactions` (`id`, `type`, `numExpediteur`, `numDestinataire`, `montant`, `date`) VALUES
-(1, 'Envoi', 775460261, 775270834, 10000, '2021-04-30 21:34:14'),
-(2, 'Reception', 775270834, 775460261, 10000, '2021-04-30 21:34:14'),
-(3, 'Envoi', 775460261, 775270861, 5000, '2021-04-30 21:34:54'),
-(4, 'Reception', 775270861, 775460261, 5000, '2021-04-30 21:34:54'),
-(5, 'Envoi', 781214796, 775460261, 15000, '2021-04-30 21:35:21'),
-(6, 'Reception', 775460261, 781214796, 15000, '2021-04-30 21:35:21'),
-(7, 'Envoi', 775460261, 781214796, 2000, '2021-04-30 22:27:29'),
-(8, 'Reception', 781214796, 775460261, 2000, '2021-04-30 22:27:29');
-COMMIT;
+--
+-- Index pour la table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`);
 
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

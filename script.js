@@ -1,25 +1,8 @@
+// fonction anonyme qui se lance au chargement de la page pour récupere la liste des numéros de compte
 (function(){
-    var xhr = null;
-    if (xhr && xhr.readyState != 0){
-        xhr.abort();
-    }
-    xhr = new XMLHttpxhr()
-    var url = "senmoney.php"
-    xhr.open("GET", url, true)
-    xhr.onreadystatechange = function(){
-        
-        if (xhr.readyState == 4 && xhr.status == 200){       
-            readData(JSON.parse(xhr.responseText))
-        }
-    }
-    xhr.send()
-})()
-
-(function readData(reponse){
-    var listeComptes = document.getElementById("listecomptes")
     document.getElementById("bouton221").addEventListener("click", menu)
     var donnees = "operation=accueil"
-    buildxhr(donnees, getNumComptes)
+    buildRequest(donnees, getNumComptes)
 })()
 
 /**
@@ -36,88 +19,38 @@ function getNumComptes(reponse){
     }
 } 
 
-document.getElementById("bouton221").addEventListener("click", menu)
-
-function menu(){
- var choix =  prompt("---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options");
-}  
-
-
-
-document.getElementById("livreBtn").addEventListener("click", function(e){
-    var xhr = null;
+/**
+ * fonction pour préparer une requete avec l'objet XMLHttpRequest avec des paramètres
+ * tels que la fonction de callback et les donnes à envoyer au fichie php en POST
+ **/
+function buildRequest(donnees, callBack){
+    var xhr = null
     if (xhr && xhr.readyState != 0){
-        xhr.abort();
+        xhr.abort()
     }
-
-    xhr = new XMLHttpxhr()
+    xhr = new XMLHttpRequest()
     var url = "senmoney.php"
     xhr.open("POST", url, true)
-    xhr.setxhrHeader("Content-type", "application/x-www-form-urlencoded")
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     xhr.onreadystatechange = function(){
         if (xhr.readyState == 4 && xhr.status == 200){
-            readData(JSON.parse(xhr.responseText))
             callBack(JSON.parse(xhr.responseText))
         }
     }
-    xhr.send()
-})
-
-function readData(reponse){
-    var listes = ""
-    for (i = 0; i < reponse.length; i++){
-        listes += "<tr><td>" + reponse[i].titre + "</td><td>" + reponse[i].auteur + "</td><td>" + reponse[i].description + "</td></tr>"
-    }
-
-    document.getElementById("livres").innerHTML += listes
-
+    xhr.send(donnees)
 }
-
-
-/*
-document.getElementById("submitButton").addEventListener("click", function(e){
-    ajaxPost(readData)
-})
-var xhr = null;
-
-function ajaxPost(callback){
-    if (xhr && xhr.readyState != 0){
-        xhr.abort();
-    }
-
-    xhr = new XMLHttpxhr()
-    var url = "senmoney.php"
-    var prenom = document.getElementById("prenom").value
-    var nom = document.getElementById("nom").value
-    var data = "prenom=" + prenom + "&nom=" + nom
-    xhr.open("POST", url, true)
-    xhr.setxhrHeader("Content-type", "application/x-www-form-urlencoded")
-   
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState == 4 && xhr.status == 200){
-            callback(JSON.parse(xhr.responseText))
-        }
-    }
-    xhr.send(data)
-}
-
-function readData(reponse){
-    var person = reponse.person
-    document.getElementById("reponse").innerHTML = person.prenom + " " + person.nom
-}
-*/
 
 // fonction principale appelé si l'utilisateur appuie sur le bouton #221#
 function menu(){
   var choix = prompt("\t---MENU SENMONEY---\nTapez le numero du service choisi\n1. Solde de mon compte\n2. Transfert d'argent\n3. Paiement de facture\n4. Options")
   
-  if (choix == 1){
+  if (choix == 1 ){
     afficherSolde()
   }
-  else if (choix == 2) {
+  else if (choix == 2 ) {
     transferer()
   }
-  else if (choix == 4) {
+  else if (choix == 4 ) {
     options()
   }
   else {
@@ -132,7 +65,7 @@ function menu(){
 function afficherSolde(){
    var numCompte = getNumCompteCourant()
     var donnees = "operation=afficherSolde" + "&numeroCompte=" + numCompte
-    buildxhr(donnees, notifierSolde)
+    buildRequest(donnees, notifierSolde)
 }
 
 /** Permet d'afficher le solde récupéré par la fonction afficherSolde
@@ -145,14 +78,16 @@ function notifierSolde(compte){
     }
 }
 
-// pas encore implémentée
+/**Permet de transférer de l'argent d'un compte à un autre
+ * Elle est appelé par la fonction menu si l'utilisateur choisi l'option 2
+ **/
  function transferer(){
     var numCompte = getNumCompteCourant()
     var NumDestinataire = prompt("Tapez le numéro du destinataire")
     var montant = prompt("Tapez le montant à envoyer")
     var code = prompt("Tapez votre code secret")
     var donnees = "operation=transferer" + "&numCompte=" + numCompte + "&numDestinataire=" + NumDestinataire + "&montant=" + montant + "&code=" + code
-    buildxhr(donnees, notifierTransfert)
+    buildRequest(donnees, notifierTransfert)
  }
 
 function notifierTransfert(notification){
@@ -165,7 +100,9 @@ function notifierTransfert(notification){
   }
 }
 
-// pas encore implémentée
+/** permet de modifier son code ou de voir les wind dernières transactions
+ *  Elle est appelé si l'utilisateur choisi l'option 4
+**/
 function options(){
     var choix = prompt("\t---OPTIONS---\n1. Modifier mon code secret\n2. Consulter mes cinq dernières transactions\n3. Retourner au menu principal");
     if (choix == 1){
@@ -191,14 +128,14 @@ function modifierCode(){
     var nouveauCode2 = prompt("Confirmer le nouveau code secret")
     if (nouveauCode1 == nouveauCode2){
         var donnees = "operation=modifierCode" + "&numCompte=" + numCompte + "&codeActuel=" + codeActuel + "&nouveauCode=" + nouveauCode1
-        buildxhr(donnees, notifierCode)
+        buildRequest(donnees, notifierCode)
     }
     else{
         alert("Les mots de passe ne correspondent pas.")
         options()
     }
 }
-  
+// permet de confirmer la modification du code ou son annulation
 function notifierCode(notification){
     if (notification.type == "succes"){
        var choix = confirm("Le code secret a été mis à jour avec succès.\nVoulez-vous retourner au menu ?")
@@ -219,7 +156,7 @@ function notifierCode(notification){
 function afficherTransactions(){
     var numCompte = getNumCompteCourant()
     var donnees = "operation=transactions" + "&numCompte=" + numCompte
-    buildxhr(donnees, notifierTransactions)
+    buildRequest(donnees, notifierTransactions)
 }
 
 // Permet de notifier à l'utilisateur ses 5 dernières transactions
@@ -247,3 +184,4 @@ function getNumCompteCourant(){
     }
     return numeroCompte
 }
+

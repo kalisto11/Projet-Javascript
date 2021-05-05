@@ -1,18 +1,4 @@
 <?php
-    $pdo = new PDO('mysql:host=localhost; dbname=senmoneydb', 'root', '');
-    $retour = $pdo->query('SELECT numero FROM comptes');
-    $comptes = array();
-    while ($compte = $retour->fetch()){
-        $comptes[] =  $compte;
-    }
-    exit(json_encode($comptes));
-    
-    class SenMoney{
-        public function __construct(){
-        
-        }
-            // fonction pour la connexion à base de données
-
     class SenMoneyRequest{
         // fonction pour la connexion à base de données
         public static function dbConnect(){
@@ -68,13 +54,17 @@
         public function transferer($numCompte, $numDestinataire, $montant, $code){
             $notification = array();
             $pdo = SELF::dbConnect();
+
+            // récupération du code et du solde du compte courant
             $reponse = $pdo->prepare('SELECT code, solde FROM comptes WHERE numero = ?');
             $reponse->execute(array($numCompte));
             $compte = $reponse->fetch();
-        
+            
+            // Vérification si le code saisi est correct et de la solde du compte
             if ($compte["code"] == $code){
                 if ($compte["solde"] >= $montant){
-                    // traitement tansfert ici
+
+                    // Mis à jour de la solde du compte de l'expediteur
                     $req1 = "UPDATE comptes SET solde = solde - :montant WHERE numero = :numCompte";
                     $reponse = $pdo->prepare($req1) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
@@ -82,6 +72,7 @@
                         'numCompte' => $numCompte
                     ));	
 
+                    // Mis à jour de la solde du compte du destinataire
                     $req2 = "UPDATE comptes SET solde = solde + :montant WHERE numero = :numDestinataire";
                     $reponse = $pdo->prepare($req2) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
@@ -89,19 +80,20 @@
                         'numDestinataire' => $numDestinataire
                     ));	
 
-                    $req3 = 'INSERT INTO transactions (type, compteDomicile, compteEtranger, montant, date) VALUES ("Envoi", :compteDomicile, :compteEtranger, :montant, NOW())';
+                    // Enregistrement de la transaction
+                    $req3 = 'INSERT INTO transactions (type, numExpediteur, numDestinataire, montant, date) VALUES ("Envoi", :numExpediteur, :numDestinataire, :montant, NOW())';
                     $reponse = $pdo->prepare($req3) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
-                        'compteDomicile' => $numCompte,
-                        'compteEtranger' => $numDestinataire,
+                        'numExpediteur' => $numCompte,
+                        'numDestinataire' => $numDestinataire,
                         'montant' => $montant
                     ));	
 
-                    $req4 = 'INSERT INTO transactions (type, compteDomicile, compteEtranger, montant, date) VALUES ("Reception", :compteDomicile, :compteEtranger, :montant, NOW())';
+                    $req4 = 'INSERT INTO transactions (type, numExpediteur, numDestinataire, montant, date) VALUES ("Reception", :numExpediteur, :numDestinataire, :montant, NOW())';
                     $reponse = $pdo->prepare($req4) OR die(print_r($pdo->errorinfo()));
                     $resultat = $reponse->execute(array( 
-                        'compteDomicile' => $numDestinataire,
-                        'compteEtranger' => $numCompte,
+                        'numExpediteur' => $numDestinataire,
+                        'numDestinataire' => $numCompte,
                         'montant' => $montant
                     ));	
 
@@ -125,7 +117,7 @@
         // Permet de récupérer les 5 dernières transactions d'un numéro de compte donné en paramètre
         public function getTransactions($numCompte){
             $pdo = SELF::dbConnect();
-            $reponse = $pdo->prepare('SELECT * FROM transactions WHERE compteDomicile = ? ORDER BY date DESC LIMIT 5');
+            $reponse = $pdo->prepare('SELECT * FROM transactions WHERE numExpediteur = ? ORDER BY date DESC LIMIT 5');
             $reponse->execute(array($numCompte));
             $transactions = array();
             while ($transaction = $reponse->fetch()){
@@ -134,26 +126,35 @@
             exit(json_encode($transactions));
         }
     } // fin classe
-    
+
     $request = new SenMoneyRequest();
 
     if (isset($_POST["operation"])){
-        if ($_POST["operation"] == "accueil"){
+        switch ($_POST["operation"]){
+            case "accueil":
+                $comptes = $request->getComptes();
+                exit(json_encode($comptes));
+            break;
+            
+            case "afficherSolde":
+                $solde = $request->getSolde($_POST["numeroCompte"]);
+                exit(json_encode($solde));
+            break;
+
+            case "transferer":
+                $request->transferer($_POST["numCompte"], $_POST["numDestinataire"], $_POST["montant"], $_POST["code"]);
+            break;
+
+            case "modifierCode":
+                $request->modifierCode($_POST["numCompte"], $_POST["codeActuel"], $_POST["nouveauCode"]);
+            break;
+
+            case "transactions":
+                $request->getTransactions($_POST["numCompte"]);
+            break;
+            
+            default:
             $comptes = $request->getComptes();
-            exit(json_encode($comptes));
-        }
-        else if ($_POST["operation"] == "afficherSolde"){
-            $solde = $request->getSolde($_POST["numeroCompte"]);
-            exit(json_encode($solde));
-        }
-        else if ($_POST["operation"] == "transferer"){
-            $request->transferer($_POST["numCompte"], $_POST["numDestinataire"], $_POST["montant"], $_POST["code"]);
-        }
-        else if ($_POST["operation"] == "modifierCode"){
-            $request->modifierCode($_POST["numCompte"], $_POST["codeActuel"], $_POST["nouveauCode"]);
-        }
-        else if ($_POST["operation"] == "transactions"){
-            $request->getTransactions($_POST["numCompte"]);
         }
     }
 ?>

@@ -1,10 +1,11 @@
 body{
+    background-image: url(fonduvs.jpg);
     min-width: 320px;
     font-family: Verdana, "Sans-serif";
 }
 
 #board {
-    background-color: rgb(69, 128, 238);
+    background-color: rgba(72, 133, 245,0.8);
     opacity: .9;
     height: 280px;
     width: 400px;
@@ -20,6 +21,7 @@ body{
     font-size: 20px;
     margin-top: 100px;
 }
+
 
 #bouton221{
     margin-top: 50px;
